@@ -1,0 +1,67 @@
+"""
+Created on Fri Oct 11 08:08:22 2024
+
+@author: mjkilic
+"""
+# Define the transliteration mappings
+serbian_transliteration_map = {
+    'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V', 'в': 'v', 'Г': 'G', 'г': 'g',
+    'Д': 'D', 'д': 'd', 'Ђ': 'Đ', 'ђ': 'đ', 'Е': 'E', 'е': 'e', 'Ж': 'Ž', 'ж': 'ž',
+    'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i', 'Ј': 'J', 'ј': 'j', 'К': 'K', 'к': 'k',
+    'Л': 'L', 'л': 'l', 'Љ': 'Lj', 'љ': 'lj', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
+    'Њ': 'Nj', 'њ': 'nj', 'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R', 'р': 'r',
+    'С': 'S', 'с': 's', 'Т': 'T', 'т': 't', 'Ћ': 'Ć', 'ћ': 'ć', 'У': 'U', 'у': 'u',
+    'Ф': 'F', 'ф': 'f', 'Х': 'H', 'х': 'h', 'Ц': 'C', 'ц': 'c', 'Ч': 'Č', 'ч': 'č',
+    'Џ': 'Dž', 'џ': 'dž', 'Ш': 'Š', 'ш': 'š'
+}
+
+russian_transliteration_map = {
+    'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V', 'в': 'v', 'Г': 'G', 'г': 'g',
+    'Д': 'D', 'д': 'd', 'Е': 'E', 'е': 'e', 'Ё': 'Ë', 'ё': 'ë', 'Ж': 'Zh', 'ж': 'zh',
+    'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i', 'І': 'Ī', 'і': 'ī', 'Й': 'Ĭ', 'й': 'ĭ',
+    'К': 'K', 'к': 'k', 'Л': 'L', 'л': 'l', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
+    'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R', 'р': 'r', 'С': 'S', 'с': 's',
+    'Т': 'T', 'т': 't', 'У': 'U', 'у': 'u', 'Ф': 'F', 'ф': 'f', 'Х': 'Kh', 'х': 'kh',
+    'Ц': 'T͡s', 'ц': 't͡s', 'Ч': 'Ch', 'ч': 'ch', 'Ш': 'Sh', 'ш': 'sh', 'Щ': 'Shch', 'щ': 'shch',
+    'Ъ': 'ʺ', 'ъ': 'ʺ', 'Ы': 'Y', 'ы': 'y', 'Ь': 'ʹ', 'ь': 'ʹ', 'Ѣ': 'ѣ', 'Э': 'Ė', 'э': 'ė',
+    'Ю': 'I͡u', 'ю': 'i͡u', 'Я': 'I͡a', 'я': 'i͡a', 'Ѳ': 'Ḟ', 'ѳ': 'ḟ', 'Ѵ': 'Ẏ', 'ѵ': 'ẏ'
+}
+
+# Function to transliterate text based on the selected language
+def transliterate(text, language):
+    if language == 1:
+        transliteration_map = russian_transliteration_map
+    elif language == 2:
+        transliteration_map = serbian_transliteration_map
+    else:
+        return text
+
+    result = []
+    for char in text:
+        result.append(transliteration_map.get(char, char))
+    return ''.join(result)
+
+# Main function to run the script
+def main():
+    while True:
+        print()
+        print("Select the language for transliteration:")
+        print("1. Russian Cyrillic")
+        print("2. Serbian Cyrillic")
+        print("3. Exit")
+        print()
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == '3':
+            print("Exiting the script.")
+            break
+        elif choice in ['1', '2']:
+            language = int(choice)
+            text = input("Enter the text to transliterate: ")
+            transliterated_text = transliterate(text, language)
+            print("Transliterated text:", transliterated_text)
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
