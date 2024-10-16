@@ -1,0 +1,49 @@
+"""
+Created on Thu Oct 10 20:38:11 2024
+
+@author: mjkilic
+"""
+import pandas as pd
+import re
+
+# Define the Serbian transliteration mapping
+serbian_transliteration_map = {
+    'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V', 'в': 'v', 'Г': 'G', 'г': 'g',
+    'Д': 'D', 'д': 'd', 'Ђ': 'Đ', 'ђ': 'đ', 'Е': 'E', 'е': 'e', 'Ж': 'Ž', 'ж': 'ž',
+    'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i', 'Ј': 'J', 'ј': 'j', 'К': 'K', 'к': 'k',
+    'Л': 'L', 'л': 'l', 'Љ': 'Lj', 'љ': 'lj', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
+    'Њ': 'Nj', 'њ': 'nj', 'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R', 'р': 'r',
+    'С': 'S', 'с': 's', 'Т': 'T', 'т': 't', 'Ћ': 'Ć', 'ћ': 'ć', 'У': 'U', 'у': 'u',
+    'Ф': 'F', 'ф': 'f', 'Х': 'H', 'х': 'h', 'Ц': 'C', 'ц': 'c', 'Ч': 'Č', 'ч': 'č',
+    'Џ': 'Dž', 'џ': 'dž', 'Ш': 'Š', 'ш': 'š'
+}
+
+# Function to transliterate Serbian Cyrillic to Latin
+def transliterate(text):
+    return ''.join(serbian_transliteration_map.get(char, char) for char in text)
+
+# Read the content of the file
+with open('DirectExport-1.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+
+# Extract titles in Serbian Cyrillic script
+pattern = r'Title:\s*([А-Яа-яЀ-џ\s]+/?)'
+titles = re.findall(pattern, content)
+
+# Create a DataFrame with the titles
+df = pd.DataFrame(titles, columns=['Title'])
+
+# Remove blank rows
+df = df[df['Title'].str.strip().astype(bool)]
+
+# Add numbering to the DataFrame
+df.index += 1
+df.index.name = 'Number'
+
+# Add a new column for the transliterated titles
+df['Transliterated Title'] = df['Title'].apply(transliterate)
+
+# Save the DataFrame to a new CSV file
+df.to_csv('transliterated_titles.csv', index=True, encoding='utf-8')
+
+print("CSV file 'transliterated_titles.csv' has been created successfully.")
